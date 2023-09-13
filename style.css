@@ -10,6 +10,7 @@ body {
   padding: 48px;
 }
 
+/* MAIN LAYOUT */
 .header {
   margin-bottom: 40px;
 
@@ -17,11 +18,21 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
+.main {
+  display: grid;
+  grid-template-columns: 250px 3fr;
+  gap: 48px;
+}
+
+/* ELEMENTS */
+
 .logo {
   display: flex;
   align-items: center;
   gap: 16px;
 }
+
 h1 {
   font-size: 42px;
   text-transform: uppercase;
