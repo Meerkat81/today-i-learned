@@ -28,7 +28,9 @@ body {
   grid-template-columns: 250px 3fr;
   gap: 48px;
 }
-
+.category {
+  margin-bottom: 16px;
+}
 /* ELEMENTS */
 
 .logo {
@@ -77,6 +79,7 @@ h1 {
   padding-top: 3px;
   padding-left: 10px;
   padding-right: 10px;
+  border-radius: 100px;
 }
 
 .vote-buttons {
@@ -98,4 +101,35 @@ ul {
 .source:hover,
 .source:active {
   color: #3b82f6;
+}
+
+.btn {
+  border: none;
+  color: inherit;
+  font-family: "Coiny", sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  font-size: 17px;
+  padding: 16px 0 13px;
+  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
+  border-radius: 50px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.btn:hover {
+  transform: scale(110%) rotate(-2deg);
+}
+.btn-large {
+  font-size: 20px;
+  padding: 20px 32px 17px;
+}
+
+.btn-all-categories {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.btn-category {
+  width: 100%;
+  background-image: none;
 }
