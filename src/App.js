@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "./supabase";
 import "./style.css";
 
@@ -35,10 +35,16 @@ const initialFacts = [
     createdIn: 2015,
   },
 ];
-
 function App() {
   const [showForm, setShowForm] = useState(false);
-  const [facts, setFacts] = useState(initialFacts);
+  const [facts, setFacts] = useState([]);
+  useEffect(function () {
+    async function getFacts() {
+      const { data: facts, error } = await supabase.from("facts").select("*");
+      setFacts(facts);
+    }
+    getFacts();
+  }, []);
   return (
     <>
       <Header showForm={showForm} setShowForm={setShowForm} />
@@ -184,7 +190,6 @@ function CategoryFilter() {
 
 function FactList({ facts }) {
   // TEMPORARY
-
   return (
     <section>
       <ul className="facts-list">
