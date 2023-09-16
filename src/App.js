@@ -42,8 +42,13 @@ function App() {
   useEffect(function () {
     async function getFacts() {
       setIsLoading(true);
-      const { data: facts, error } = await supabase.from("facts").select("*");
-      setFacts(facts);
+      const { data: facts, error } = await supabase
+        .from("facts")
+        .select("*")
+        .order("votesInteresting", { ascending: false })
+        .limit(1000);
+      if (!error) setFacts(facts);
+      else alert("There was a problem getting data");
       setIsLoading(false);
     }
     getFacts();
