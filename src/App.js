@@ -39,20 +39,29 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [facts, setFacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(function () {
-    async function getFacts() {
-      setIsLoading(true);
-      const { data: facts, error } = await supabase
-        .from("facts")
-        .select("*")
-        .order("votesInteresting", { ascending: false })
-        .limit(1000);
-      if (!error) setFacts(facts);
-      else alert("There was a problem getting data");
-      setIsLoading(false);
-    }
-    getFacts();
-  }, []);
+  const [currentCategory, setCurrectCategory] = useState("all");
+  useEffect(
+    function () {
+      async function getFacts() {
+        setIsLoading(true);
+
+        let query = supabase.from("facts").select("*");
+
+        if (currentCategory !== "all")
+          query = query.eq("category", currentCategory);
+
+        const { data: facts, error } = await query
+          .order("votesInteresting", { ascending: false })
+          .limit(1000);
+
+        if (!error) setFacts(facts);
+        else alert("There was a problem getting data");
+        setIsLoading(false);
+      }
+      getFacts();
+    },
+    [currentCategory]
+  );
   return (
     <>
       <Header showForm={showForm} setShowForm={setShowForm} />
@@ -60,7 +69,7 @@ function App() {
         <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
       )}
       <main className="main">
-        <CategoryFilter />
+        <CategoryFilter setCurrectCategory={setCurrectCategory} />
         {isLoading ? <Loader /> : <FactList facts={facts} />}
       </main>
     </>
@@ -178,17 +187,23 @@ function NewFactForm({ setFacts, setShowForm }) {
   );
 }
 
-function CategoryFilter() {
+function CategoryFilter({ setCurrectCategory }) {
   return (
     <aside>
       <ul>
         <li className="category">
-          <button className="btn btn-all-categories">All</button>
+          <button
+            className="btn btn-all-categories"
+            onClick={() => setCurrectCategory("all")}
+          >
+            All
+          </button>
         </li>
         {CATEGORIES.map((cat) => (
           <li className="category" key={cat.name}>
             <button
               className="btn btn-category"
+              onClick={() => setCurrectCategory(cat.name)}
               style={{ backgroundColor: cat.color }}
             >
               {cat.name}
