@@ -36,12 +36,14 @@ const initialFacts = [
 ];
 
 function App() {
-  const [showForm, setShowForm] = useState(true);
+  const [showForm, setShowForm] = useState(false);
   const [facts, setFacts] = useState(initialFacts);
   return (
     <>
       <Header showForm={showForm} setShowForm={setShowForm} />
-      {showForm && <NewFactForm />}
+      {showForm && (
+        <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
+      )}
       <main className="main">
         <CategoryFilter />
         <FactList facts={facts} />
@@ -92,7 +94,7 @@ function isValidHttpUrl(string) {
   return url.protocol === "http:" || url.protocol === "https:";
 }
 
-function NewFactForm() {
+function NewFactForm({ setFacts, setShowForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("http://example.com");
   const [category, setCategory] = useState("");
@@ -117,11 +119,16 @@ function NewFactForm() {
         votesInteresting: 0,
         votesMindblowing: 0,
         votesFalse: 0,
-        createdIn: new Date().getCurrentYear(),
+        createdIn: new Date().getFullYear(),
       };
       //Add new fact to state
-
+      setFacts((facts) => [newFact, ...facts]);
+      //Reset form
+      setText("");
+      setSource("");
+      setCategory("");
       //close form
+      setShowForm(false);
     }
   }
   return (
