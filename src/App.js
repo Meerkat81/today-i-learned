@@ -75,46 +75,50 @@ function CategoryFilter() {
 function FactList() {
   // TEMPORARY
   const facts = initialFacts;
-  const categoryColor = (catArray, category) =>
-    catArray.find((cat) => cat.name === category.category).color;
+
   return (
     <section>
       <ul className="facts-list">
         {facts.map((fact) => (
-          <li className="fact" key={fact.id}>
-            <p>
-              {fact.text}
-              <a
-                className="source"
-                href={fact.source}
-                target="_blank"
-                rel="noreferrer"
-              >
-                (Source)
-              </a>
-            </p>
-            <span
-              className="tag"
-              style={{
-                backgroundColor: `${categoryColor(CATEGORIES, fact)}`,
-              }}
-            >
-              {fact.category}
-            </span>
-            <div className="vote-buttons">
-              <button>👍 {fact.votesInteresting}</button>
-              <button>🤯 {fact.votesMindblowing}</button>
-              <button>⛔️ {fact.votesFalse}</button>
-            </div>
-          </li>
+          <Fact fact={fact} key={fact.id} />
         ))}
       </ul>
+      <p>There are {facts.length} facts in the datebase, add your own. </p>
     </section>
   );
 }
 
-function Fact() {
-  return;
+function Fact({ fact }) {
+  const categoryColor = (catArray, category) =>
+    catArray.find((cat) => cat.name === category.category).color;
+  return (
+    <li className="fact">
+      <p>
+        {fact.text}
+        <a
+          className="source"
+          href={fact.source}
+          target="_blank"
+          rel="noreferrer"
+        >
+          (Source)
+        </a>
+      </p>
+      <span
+        className="tag"
+        style={{
+          backgroundColor: `${categoryColor(CATEGORIES, fact)}`,
+        }}
+      >
+        {fact.category}
+      </span>
+      <div className="vote-buttons">
+        <button>👍 {fact.votesInteresting}</button>
+        <button>🤯 {fact.votesMindblowing}</button>
+        <button>⛔️ {fact.votesFalse}</button>
+      </div>
+    </li>
+  );
 }
 
 export default App;
