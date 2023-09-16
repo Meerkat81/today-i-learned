@@ -58,10 +58,8 @@ async function loadFacts() {
     "https://fcftmlbyprvezwswyxti.supabase.co/rest/v1/facts",
     {
       headers: {
-        apikey:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjZnRtbGJ5cHJ2ZXp3c3d5eHRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ3MTk0MDIsImV4cCI6MjAxMDI5NTQwMn0.bYAPa5SR84Ialqt1A38WanDfE4BqRB433vvzjvJspj0",
-        authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjZnRtbGJ5cHJ2ZXp3c3d5eHRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ3MTk0MDIsImV4cCI6MjAxMDI5NTQwMn0.bYAPa5SR84Ialqt1A38WanDfE4BqRB433vvzjvJspj0",
+        apikey: "WHOOPS",
+        authorization: "WHOOPS",
       },
     }
   );
