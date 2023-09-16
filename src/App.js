@@ -37,14 +37,14 @@ const initialFacts = [
 
 function App() {
   const [showForm, setShowForm] = useState(true);
-
+  const [facts, setFacts] = useState(initialFacts);
   return (
     <>
       <Header showForm={showForm} setShowForm={setShowForm} />
       {showForm && <NewFactForm />}
       <main className="main">
         <CategoryFilter />
-        <FactList />
+        <FactList facts={facts} />
       </main>
     </>
   );
@@ -80,14 +80,49 @@ const CATEGORIES = [
   { name: "news", color: "#8b5cf6" },
 ];
 
+function isValidHttpUrl(string) {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
 function NewFactForm() {
   const [text, setText] = useState("");
-  const [source, setSource] = useState("");
+  const [source, setSource] = useState("http://example.com");
   const [category, setCategory] = useState("");
-  const remainingText = 200 - text.length;
+  const textLength = text.length;
+  const maxTextLength = 200;
   function handleSubmit(e) {
+    //prevent default
     e.preventDefault();
-    console.log(text, source, category);
+    //Validate Data
+    if (
+      text &&
+      isValidHttpUrl(source) &&
+      category &&
+      textLength <= maxTextLength
+    ) {
+      //Create new fact object
+      const newFact = {
+        id: Math.round(Math.random() * 10000000000),
+        text,
+        source,
+        category,
+        votesInteresting: 0,
+        votesMindblowing: 0,
+        votesFalse: 0,
+        createdIn: new Date().getCurrentYear(),
+      };
+      //Add new fact to state
+
+      //close form
+    }
   }
   return (
     <form className="fact-form" onSubmit={handleSubmit}>
@@ -97,7 +132,7 @@ function NewFactForm() {
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <span>{remainingText}</span>
+      <span>{maxTextLength - textLength}</span>
       <input
         type="text"
         placeholder="Trustworthy source..."
@@ -139,9 +174,8 @@ function CategoryFilter() {
   );
 }
 
-function FactList() {
+function FactList({ facts }) {
   // TEMPORARY
-  const facts = initialFacts;
 
   return (
     <section>
