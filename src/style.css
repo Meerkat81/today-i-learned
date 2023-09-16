@@ -19,7 +19,11 @@ body {
 .hidden {
   display: none !important;
 }
-
+.disputed {
+  color: #ef4444;
+  font-weight: 600;
+  margin-right: 10px;
+}
 .header {
   margin-bottom: 40px;
   display: flex;
