@@ -126,9 +126,10 @@ function NewFactForm({ setFacts, setShowForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("http://example.com");
   const [category, setCategory] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const textLength = text.length;
   const maxTextLength = 200;
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     //prevent default
     e.preventDefault();
     //Validate Data
@@ -138,19 +139,16 @@ function NewFactForm({ setFacts, setShowForm }) {
       category &&
       textLength <= maxTextLength
     ) {
-      //Create new fact object
-      const newFact = {
-        id: Math.round(Math.random() * 10000000000),
-        text,
-        source,
-        category,
-        votesInteresting: 0,
-        votesMindblowing: 0,
-        votesFalse: 0,
-        createdIn: new Date().getFullYear(),
-      };
+      //Upload fact to Supabase and recieve new fact object
+      setIsUploading(true);
+      const { data: newFact, error } = await supabase
+        .from("facts")
+        .insert([{ text, source, category }])
+        .select();
+      setIsUploading(false);
       //Add new fact to state
-      setFacts((facts) => [newFact, ...facts]);
+      setFacts((facts) => [newFact[0], ...facts]);
+
       //Reset form
       setText("");
       setSource("");
@@ -166,6 +164,7 @@ function NewFactForm({ setFacts, setShowForm }) {
         placeholder="Share a fact with the world..."
         value={text}
         onChange={(e) => setText(e.target.value)}
+        disabled={isUploading}
       />
       <span>{maxTextLength - textLength}</span>
       <input
@@ -173,8 +172,13 @@ function NewFactForm({ setFacts, setShowForm }) {
         placeholder="Trustworthy source..."
         value={source}
         onChange={(e) => setSource(e.target.value)}
+        disabled={isUploading}
       />
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+        disabled={isUploading}
+      >
         <option value="">Choose category:</option>
         {CATEGORIES.map((cat) => (
           <option key={cat.name} value={cat.name}>
@@ -182,7 +186,9 @@ function NewFactForm({ setFacts, setShowForm }) {
           </option>
         ))}
       </select>
-      <button className="btn btn-large">Post</button>
+      <button className="btn btn-large" disabled={isUploading}>
+        Post
+      </button>
     </form>
   );
 }
@@ -261,8 +267,8 @@ function Fact({ fact }) {
       </span>
       <div className="vote-buttons">
         <button>👍 {fact.votesInteresting}</button>
-        <button>🤯 {fact.votesMindblowing}</button>
-        <button>⛔️ {fact.votesFalse}</button>
+        <button>🤯 {fact.votesMindBlowing}</button>
+        <button>⛔️ {fact.voteFalse}</button>
       </div>
     </li>
   );
