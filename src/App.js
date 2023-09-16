@@ -147,7 +147,7 @@ function NewFactForm({ setFacts, setShowForm }) {
         .select();
       setIsUploading(false);
       //Add new fact to state
-      setFacts((facts) => [newFact[0], ...facts]);
+      if (!error) setFacts((facts) => [newFact[0], ...facts]);
 
       //Reset form
       setText("");
