@@ -10,7 +10,7 @@ function App() {
         <button className="btn btn-large btn-open">Share a Fact</button>
       </header>
       <NewFactForm />
-      <main class="main">
+      <main className="main">
         <CategoryFilter />
         <FactList />
       </main>
